@@ -1,0 +1,511 @@
+
+/**********************************************************************/
+//Trinidad-Ramos-Sanchez
+//Enrollment System - LBYEC72 EG3 Final Project
+/**********************************************************************/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct students {
+	char lName[10];
+	char fName[10];
+	char mName[10];
+	char dProgram[10];
+	char college[10];
+	char username[10];
+	char password[10];
+} user;
+
+struct courses {
+	char cName[8];
+	char cSection[3];
+	char cDay[2];
+	char cTime[10];
+	char cRoom[5];
+	float cUnits;
+	int cID;	
+};
+
+void checkAuthentication(struct students user[]) {
+	
+	int i, chk, accFlag;
+	char username[10], password[10];
+	struct students student[10];
+	
+	strcpy(student[0].lName, "Ramos");
+	strcpy(student[0].fName, "Richard II");
+	strcpy(student[0].mName, "E.");
+	strcpy(student[0].dProgram, "BS-MEE");
+	strcpy(student[0].college, "COE");
+	strcpy(student[0].username, "rer");
+	strcpy(student[0].password, "rer0809");	
+	
+	strcpy(student[1].lName, "Sanchez");
+	strcpy(student[1].fName, "Philip");
+	strcpy(student[1].mName, "A.");
+	strcpy(student[1].dProgram, "BS-CHE");
+	strcpy(student[1].college, "COE");
+	strcpy(student[1].username, "pas");
+	strcpy(student[1].password, "pas123");
+	
+	strcpy(student[2].lName, "Trinidad");
+	strcpy(student[2].fName, "Stephen");
+	strcpy(student[2].mName, "S.");
+	strcpy(student[2].dProgram, "BS-IE");
+	strcpy(student[2].college, "COE");
+	strcpy(student[2].username, "slt");
+	strcpy(student[2].password, "slt0202");
+
+      	strcpy(student[3].lName, "Cabatuan");
+	strcpy(student[3].fName, "Melvin");
+	strcpy(student[3].mName, "K.");
+	strcpy(student[3].dProgram, "BS-CPE");
+	strcpy(student[3].college, "COE");
+	strcpy(student[3].username, "cmk");
+	strcpy(student[3].password, "cmk321");
+
+	accFlag = 0;
+	
+	do {
+	
+	system("cls");
+	
+	printf("Please input your username and password \n");
+	printf("username: ");
+	scanf("%s", &username);
+	printf("password: ");
+	scanf("%s", &password);		
+		
+		for(i=0;i<10;i++) {
+		
+			chk = strcmp(student[i].username,username);
+		
+			if (chk == 0) {
+				chk = strcmp(student[i].password,password);
+				if (chk == 0) {			
+					strcpy(user[0].lName, student[i].lName);
+					strcpy(user[0].fName, student[i].fName);
+					strcpy(user[0].mName, student[i].mName);
+					strcpy(user[0].dProgram, student[i].dProgram);
+					strcpy(user[0].college, student[i].college);
+					strcpy(user[0].username, student[i].username);
+					strcpy(user[0].password, student[i].password);
+				
+					accFlag = 1;		
+				}
+			}
+		}
+		
+		if (accFlag == 1) {
+			
+			printf("\nSTATUS:\tAccess granted. Welcome! \n");	
+			system("pause");			
+		}
+		else {
+			printf("\nSTATUS:\tInvalid username and/or password. Please try again.. \n");
+			system("pause");				
+		}
+			
+	} while(accFlag!=1);
+	
+}
+
+int checkConflict(int enlisted[], int idx, int inID) {
+	
+	int i, errFlag1, errFlag2, validity1;
+	
+	errFlag1 = 0;
+	errFlag2 = 0;
+	
+	for(i=0;i<=idx;i++) {
+		if (enlisted[i] == 0 || enlisted[i] == 1 || enlisted[i] == 2) {
+			if (inID == 0 || inID == 1 || inID == 2) {
+				errFlag1 = 1;
+			}
+			if (enlisted[i] == 2 && inID == 11){
+				errFlag2 = 1;
+			}
+		}
+		if (enlisted[i] == 3 || enlisted[i] == 4 || enlisted[i] == 5) {
+			if (inID == 3 || inID == 4 || inID == 5) {
+				errFlag1 = 1;
+			}
+			if (enlisted[i] == 4 && inID == 7){
+				errFlag2 = 1;
+			}
+		}
+		if (enlisted[i] == 6 || enlisted[i] == 7 || enlisted[i] == 8) {
+			if (inID == 6 || inID == 7 || inID == 8) {
+				errFlag1 = 1;
+			}
+			if (enlisted[i] == 7 && inID == 4){
+				errFlag2 = 1;
+			}
+		}
+		if (enlisted[i] == 9 || enlisted[i] == 10 || enlisted[i] == 11) {
+			if (inID == 9 || inID == 10 || inID == 11) {
+				errFlag1 = 1;
+			}
+			if (enlisted[i] == 11 && inID == 2){
+				errFlag2 = 1;
+			}
+		}
+	}
+	
+	validity1 = errFlag1 + errFlag2;
+	return validity1;			
+}
+
+int checkUnits(int enlisted[], int idx, int inID) {
+	
+	int i, sumUnits;
+	
+	sumUnits = 0;
+	
+	for(i=0;i<idx;i++) {
+		if (enlisted[i] !=  6 || enlisted[i] !=  7 || enlisted[i] !=  8) {
+			sumUnits = sumUnits+4;
+		}
+		else {
+			sumUnits = sumUnits+2;
+		}
+	}
+	
+	if (inID !=  6 || inID !=  7 || inID !=  8) {
+		sumUnits = sumUnits+4;
+	}
+	else {
+		sumUnits = sumUnits+2;
+	}	
+	
+	if (sumUnits<=12) {
+		return 1;
+	}
+	else {
+		return 0;
+	}
+	
+}
+
+int enrollCourses(struct courses enrolled[]) {
+	
+	int i, j, inID, chk, ans, dsp, idx, validity1, validity2, conID;
+	int enlisted[5], nonConflict[12];
+	struct courses course[12];
+	
+	strcpy(course[0].cName, "ENGLCOM");
+	strcpy(course[0].cSection, "A1");
+	strcpy(course[0].cDay, "S");
+	strcpy(course[0].cTime, "1300-1430");
+	strcpy(course[0].cRoom, "A113");
+	course[0].cUnits = 4.0;
+	course[0].cID = 0;
+
+	strcpy(course[1].cName, "ENGLCOM");
+	strcpy(course[1].cSection, "A2");
+	strcpy(course[1].cDay, "F");
+	strcpy(course[1].cTime, "1430-1530");
+	strcpy(course[1].cRoom, "A113");
+	course[1].cUnits = 4.0;
+	course[1].cID = 1;
+	
+	strcpy(course[2].cName, "ENGLCOM");
+	strcpy(course[2].cSection, "A3");
+	strcpy(course[2].cDay, "H");
+	strcpy(course[2].cTime, "1530-1630");
+	strcpy(course[2].cRoom, "A113");
+	course[2].cUnits = 4.0;
+	course[2].cID = 2;
+	
+	strcpy(course[3].cName, "KASPIL1");
+	strcpy(course[3].cSection, "A1");
+	strcpy(course[3].cDay, "T");
+	strcpy(course[3].cTime, "1440-1740");
+	strcpy(course[3].cRoom, "A111");
+	course[3].cUnits = 4.0;	
+	course[3].cID = 3;
+	
+	strcpy(course[4].cName, "KASPIL1");
+	strcpy(course[4].cSection, "A2");
+	strcpy(course[4].cDay, "M");
+	strcpy(course[4].cTime, "1200-1500");
+	strcpy(course[4].cRoom, "A111");
+	course[4].cUnits = 4.0;
+	course[4].cID = 4;	
+
+	strcpy(course[5].cName, "KASPIL1");
+	strcpy(course[5].cSection, "A3");
+	strcpy(course[5].cDay, "W");
+	strcpy(course[5].cTime, "0800-1100");
+	strcpy(course[5].cRoom, "A111");
+	course[5].cUnits = 4.0;
+	course[5].cID = 5;	
+
+	strcpy(course[6].cName, "LBYEC72");
+	strcpy(course[6].cSection, "A1");
+	strcpy(course[6].cDay, "T");
+	strcpy(course[6].cTime, "0800-1100");
+	strcpy(course[6].cRoom, "G404");
+	course[6].cUnits = 2.0;
+	course[6].cID = 6;
+
+	strcpy(course[7].cName, "LBYEC72");
+	strcpy(course[7].cSection, "A2");
+	strcpy(course[7].cDay, "M");
+	strcpy(course[7].cTime, "1100-1400");
+	strcpy(course[7].cRoom, "G404");
+	course[7].cUnits = 2.0;
+	course[7].cID = 7;
+	
+	strcpy(course[8].cName, "LBYEC72");
+	strcpy(course[8].cSection, "A2");
+	strcpy(course[8].cDay, "W");
+	strcpy(course[8].cTime, "1440-1740");
+	strcpy(course[8].cRoom, "G404");
+	course[8].cUnits = 2.0;
+	course[8].cID = 8;
+	
+	strcpy(course[9].cName, "ENGIANA");
+	strcpy(course[9].cSection, "A1");
+	strcpy(course[9].cDay, "M");
+	strcpy(course[9].cTime, "1840-1940");
+	strcpy(course[9].cRoom, "A112");
+	course[9].cUnits = 4.0;
+	course[9].cID = 9;
+	
+	strcpy(course[10].cName, "ENGIANA");
+	strcpy(course[10].cSection, "A2");
+	strcpy(course[10].cDay, "F");
+	strcpy(course[10].cTime, "1140-1240");
+	strcpy(course[10].cRoom, "A112");
+	course[10].cUnits = 4.0;
+	course[10].cID = 10;
+	
+	strcpy(course[11].cName, "ENGIANA");
+	strcpy(course[11].cSection, "A3");
+	strcpy(course[11].cDay, "H");
+	strcpy(course[11].cTime, "1440-1540");
+	strcpy(course[11].cRoom, "A112");
+	course[11].cUnits = 4.0;
+	course[11].cID = 11;
+	
+	chk = 0;
+	dsp = 0;
+	idx = 0;
+	
+	do {
+		
+		system("cls");
+		
+		printf("Available Courses:\n\n");
+		printf("Course    Section  Day   Time        Room Units  Course ID\n");
+		
+		for(i=0;i<12;i++){
+			printf("%s %4s %7s %13s %6s %.2f %4d\n", course[i].cName, course[i].cSection, course[i].cDay, course[i].cTime, course[i].cRoom, course[i].cUnits, course[i].cID);
+		}
+	
+		printf("\n===========================================================\n");
+	
+		printf("Your Class Schedule: \n\n");	
+		printf("Course    Section  Day   Time        Room Units\n");
+		
+		if (dsp != 0){
+			for(i=0;i<idx;i++){
+				printf("%s %4s %7s %13s %6s %.2f\n", course[enlisted[i]].cName, course[enlisted[i]].cSection, course[enlisted[i]].cDay, course[enlisted[i]].cTime, course[enlisted[i]].cRoom, course[enlisted[i]].cUnits);
+			}
+		}
+		else {
+			printf("-EMPTY-\n");
+		}
+
+		printf("\n===========================================================\n");
+			
+		printf("\nEnroll Course\n");
+		printf("Input course id: ");
+		scanf("%d", &inID);
+		
+		printf("\nSTATUS: ");
+		
+		if (inID>=0 && inID<=11){
+						
+			if (dsp != 0) {		
+
+				validity1 = checkConflict(enlisted, idx, inID);
+				
+				if (validity1 == 1) {
+					printf("Course already enrolled\n\n");
+					printf("\n===========================================================\n");
+					system("pause");					
+				}
+				else if (validity1 == 2) {		
+					if (inID == 2){
+						conID = 11;
+					}
+					if (inID == 4){
+						conID = 7;
+					}					
+					if (inID == 7){
+						conID = 4;
+					}
+					if (inID == 11){
+						conID = 2;
+					}										
+					printf("Conflict with course id - %d\n\n", conID);
+					printf("\n===========================================================\n");
+					system("pause");										
+				}
+				else {
+					
+					validity2 = checkUnits(enlisted, idx, inID);
+					
+					if(validity2 == 1) {
+						enlisted[idx] = inID;
+						idx++;
+						printf("Course added.\n\n");									
+						system("pause");		
+					}
+					else {
+						printf("Exceeded allowable number of units.\n\n");
+						printf("\n===========================================================\n");
+						system("pause");
+					}		
+				}	
+			}
+			else {
+				dsp = 1;
+				enlisted[idx] = inID;
+				idx++;
+				printf("Course added\n\n");
+				printf("\n===========================================================\n");		
+				system("pause");						
+			}
+		}
+		else{
+			printf("Invalid course code. Try again\n");
+			printf("\n===========================================================\n");
+			system("pause");
+		}
+		
+		printf("\n===========================================================\n");
+		
+		system("cls");
+			
+		printf("Your NEW Class Schedule: \n\n");	
+		printf("Course    Section  Day   Time        Room Units\n");
+		
+		if (dsp != 0){
+			for(i=0;i<idx;i++){
+				printf("%s %4s %7s %13s %6s %.2f\n", course[enlisted[i]].cName, course[enlisted[i]].cSection, course[enlisted[i]].cDay, course[enlisted[i]].cTime, course[enlisted[i]].cRoom, course[enlisted[i]].cUnits);
+			}
+		}
+		else {
+			printf("-EMPTY-\n");
+		}
+
+		printf("\n===========================================================\n");
+
+
+		printf("\nInput 1 if finished enrolling, Press 0 to add more classes..\n");
+		printf("Input: ");
+		scanf("%d", &ans);
+		printf("\n===========================================================\n");
+		system("pause");
+		
+		if(ans == 1){
+				
+			for(i=0;i<idx;i++) {				
+				strcpy(enrolled[i].cName, course[enlisted[i]].cName);
+				strcpy(enrolled[i].cSection, course[enlisted[i]].cSection);
+				strcpy(enrolled[i].cDay, course[enlisted[i]].cDay);
+				strcpy(enrolled[i].cTime, course[enlisted[i]].cTime);
+				strcpy(enrolled[i].cRoom, course[enlisted[i]].cRoom);
+				enrolled[i].cUnits = course[enlisted[i]].cUnits;
+				enrolled[i].cID = course[enlisted[i]].cID;				
+			}
+
+			system("cls");			
+			printf("Finished Enrolling\n");
+			printf("\n===========================================================\n");			
+			printf("Your FINAL Class Schedule: \n");	
+			printf("Course    Section  Day   Time        Room Units\n");
+			
+			for(i=0;i<idx;i++){
+				printf("%s %4s %7s %13s %6s %.2f\n", course[enlisted[i]].cName, course[enlisted[i]].cSection, course[enlisted[i]].cDay, course[enlisted[i]].cTime, course[enlisted[i]].cRoom, course[enlisted[i]].cUnits);
+			}
+			
+			printf("\n===========================================================\n");	
+			system("pause");
+			
+			return idx;
+			
+		}		
+	} while(chk!=1);				
+}
+
+void displayAssesment(struct students user[], struct courses enrolled[], int numCourse) {
+	
+	int i;
+	float tuition, misc, idFee, tReg, insur;
+	
+	tuition = 0;
+	idFee = 46.00;
+	tReg = 749.00;
+	insur = 64.00;
+	
+	for(i=0;i<numCourse;i++) {
+		if (enrolled[i].cID !=  6 || enrolled[i].cID !=  7 || enrolled[i].cID !=  8) {
+			tuition = tuition + (2500*2.0);
+		}
+		else {
+			tuition = tuition + (1500.50*4.0);
+		}
+	}
+	
+	system("cls");
+	
+	printf("Account Information:\n\n");
+	printf("First Name: \t%s\n", user[0].fName);
+	printf("Middle Initial:\t%s\n", user[0].mName);
+	printf("Last Name: \t%s\n", user[0].lName);
+	printf("Program: \t%s\n", user[0].dProgram);
+	printf("College: \t%s\n", user[0].college);		
+	printf("\n===========================================================\n");
+	printf("Enrolled Courses:\n\n");
+	printf("Course    Section  Day   Time        Room Units  Course ID\n");
+	for(i=0;i<numCourse;i++){
+		printf("%s %4s %7s %13s %6s %.2f %4d\n", enrolled[i].cName, enrolled[i].cSection, enrolled[i].cDay, enrolled[i].cTime, enrolled[i].cRoom, enrolled[i].cUnits, enrolled[i].cID);
+	}	
+	printf("\n===========================================================\n");
+	printf("Assessment of Fees:\n\n");
+	printf("Tuition: %26.2f\n", tuition);
+	printf("Miscellaneous: %19.2f\n", tReg+insur);
+	printf("\tTrimetral Reg: %11.2f\n", tReg);	
+	printf("\tInsurance: %14.2f\n", insur);	
+	printf("ID Validation: %18.2f\n", idFee);
+	printf("---------------------------------\n");
+	printf("Total Fees: %23.2f\n", tuition+tReg+insur+idFee);		
+	printf("\n===========================================================\n");
+	
+	system("pause");	
+}
+
+int main() {
+	
+	int numCourse;
+	struct students user[1];
+	struct courses enrolled[3];
+	
+	printf("\n\n\t********** Welcome to the DLSU ENROLLMENT SYSTEM! **********\n\n");
+	system("pause");
+		
+	checkAuthentication(user);
+	numCourse = enrollCourses(enrolled);
+	displayAssesment(user, enrolled, numCourse);
+	
+	system("cls");
+	printf("\n\tThank you for enrolling!\n\t System Shutdown.\n");	
+	system("pause");
+	exit(0);
+}
